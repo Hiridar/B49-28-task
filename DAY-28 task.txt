@@ -1,0 +1,39 @@
+Axios :
+    
+Create a React App that allows for CRUD operations with user data using React and Axios fetch to interact with a mock API.
+
+      // src/models/user.js
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+// src/services/user.service.js
+import axios from "axios";
+const API_URL = "http://localhost:3000/users";
+export const getAllUsers = async () => {
+  const response = await axios.get(API_URL);
+  return response.data;
+};
+export const createUser = async (user) => {
+  const response = await axios.post(API_URL, user);
+  return response.data;
+};
+export const updateUser = async (id, user) => {
+  const response = await axios.put(`${API_URL}/${id}`, user);
+  return response.data;
+};
+export const deleteUser = async (id) => {
+  await axios.delete(`${API_URL}/${id}`);
+};
+
+// src/components/UserList.js
+import React, { useEffect, useState } from "react";
+import { getAllUsers } from "../services/user.service";
+const UserList = () => {
+  const [users, setUsers] = useState([]);
+  useEffect(() => {
+    getAllUsers().then((users) => setUsers(users));
+  }, []);
+  return (
